@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suyi.mapper.BookMapper">
+  <resultMap id="BaseResultMap" type="com.suyi.domain.Book">
+    <id column="bid" jdbcType="INTEGER" property="bid" />
+    <result column="bookname" jdbcType="VARCHAR" property="bookname" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="sale" jdbcType="INTEGER" property="sale" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="createtime" jdbcType="DATE" property="createtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    bid, bookname, price, author, sale, stock, picture, createtime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from book
+    where bid = #{bid,jdbcType=INTEGER}
+  </select>
+  <select id="findByBookName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from book
+    where bookname=#{bookname,jdbcType=VARCHAR}
+  </select>
+  <select id="findAll" resultMap="BaseResultMap">
+    select *
+    from book
+  </select>
+  <select id="findByBookNameAndPrice" resultMap="BaseResultMap">
+    select *
+    from book
+    <where>
+      <if test="bookname!=null and bookname!=''">
+        and bookname like concat('%',#{bookname},'%')
+      </if>
+      <if test="min!=null and min!='' and max!=null and max!=''">
+        and price &gt; #{min} and price &lt; #{max}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from book
+    where bid = #{bid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.suyi.domain.Book">
+    insert into book (bid, bookname, price, 
+      author, sale, stock, 
+      picture, createtime)
+    values (#{bid,jdbcType=INTEGER}, #{bookname,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
+      #{author,jdbcType=VARCHAR}, #{sale,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, 
+      #{picture,jdbcType=VARCHAR}, #{createtime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.suyi.domain.Book">
+    insert into book
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bid != null">
+        bid,
+      </if>
+      <if test="bookname != null">
+        bookname,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="sale != null">
+        sale,
+      </if>
+      <if test="stock != null">
+        stock,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bid != null">
+        #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="bookname != null">
+        #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="sale != null">
+        #{sale,jdbcType=INTEGER},
+      </if>
+      <if test="stock != null">
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.suyi.domain.Book">
+    update book
+    <set>
+      <if test="bookname != null">
+        bookname = #{bookname,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="sale != null">
+        sale = #{sale,jdbcType=INTEGER},
+      </if>
+      <if test="stock != null">
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=DATE},
+      </if>
+    </set>
+    where bid = #{bid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.suyi.domain.Book">
+    update book
+    set bookname = #{bookname,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      author = #{author,jdbcType=VARCHAR},
+      sale = #{sale,jdbcType=INTEGER},
+      stock = #{stock,jdbcType=INTEGER},
+      picture = #{picture,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=DATE}
+    where bid = #{bid,jdbcType=INTEGER}
+  </update>
+</mapper>
